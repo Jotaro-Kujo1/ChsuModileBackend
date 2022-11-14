@@ -38,5 +38,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public boolean changePassword(String login,String password){
+        if(findByLogin(login) != null){
+            userRepository.updatePassword(login,password);
+            return true;
+        }else return false;
+    }
 
 }
