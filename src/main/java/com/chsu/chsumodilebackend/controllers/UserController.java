@@ -40,4 +40,12 @@ public class UserController {
             return ResponseEntity.status(404).build();
         }
     }
+
+    @PostMapping(value = "/changePassword")
+    public ResponseEntity<?> changePassword(@RequestParam String login, @RequestParam String password){
+        boolean flagToChangePassword = userService.changePassword(login,password);
+        if(flagToChangePassword){
+            return ResponseEntity.ok().build();
+        }else return ResponseEntity.noContent().build();
+    }
 }
