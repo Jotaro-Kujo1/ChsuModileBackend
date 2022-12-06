@@ -1,6 +1,7 @@
 package com.chsu.chsumodilebackend.services;
 
 import com.chsu.chsumodilebackend.dao.UserRepository;
+import com.chsu.chsumodilebackend.models.Lesson;
 import com.chsu.chsumodilebackend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,18 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private LessonService lessonService;
+
     public List<User> findAll(){
         return (List<User>) userRepository.findAll();
     }
 
     public User findByLogin(String login){
-        return userRepository.findByLogin(login);
+        List<Lesson> lessons = lessonService.findAllByLogin(login);
+        User user = userRepository.findByLogin(login);
+        user.setLessons(lessons);
+        return user;
     }
 
     public boolean checkUserValid(String login, String password){
