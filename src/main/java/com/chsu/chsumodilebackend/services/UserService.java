@@ -17,14 +17,19 @@ public class UserService {
     @Autowired
     private LessonService lessonService;
 
+    @Autowired
+    private QrCodeGenerator qrCodeGenerator;
+
     public List<User> findAll(){
         return (List<User>) userRepository.findAll();
     }
 
     public User findByLogin(String login){
-        List<Lesson> lessons = lessonService.findAllByLogin(login);
         User user = userRepository.findByLogin(login);
-        user.setLessons(lessons);
+        if(user.getJobTitle().equals("teacher")){
+            user.setLessons(lessonService.findAllByLogin(login));
+            qrCodeGenerator.getQr(user);
+        }
         return user;
     }
 
