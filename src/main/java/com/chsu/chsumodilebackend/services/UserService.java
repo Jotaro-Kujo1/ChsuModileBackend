@@ -28,7 +28,6 @@ public class UserService {
         User user = userRepository.findByLogin(login);
         if(user.getJobTitle().equals("teacher")){
             user.setLessons(lessonService.findAllByLogin(login));
-            qrCodeGenerator.getQr(user);
         }
         return user;
     }
